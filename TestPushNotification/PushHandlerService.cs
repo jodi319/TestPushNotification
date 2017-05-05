@@ -1,4 +1,4 @@
-﻿using Android.App; 
+﻿using Android.App;
 using Android.Content;
 using Android.Util;
 using Gcm.Client;
@@ -9,6 +9,7 @@ using WindowsAzure.Messaging;
 using Android.Support.V4.App;
 using TaskStackBuilder = Android.Support.V4.App.TaskStackBuilder;
 using Android.Media;
+using System.Threading.Tasks;
 
 namespace TestPushNotification
 {
@@ -81,10 +82,10 @@ namespace TestPushNotification
         //    }
         //}
 
-        protected override void OnMessage(Context context, Intent intent)
+        protected override async void OnMessage(Context context, Intent intent)
         {
             Log.Info("PushHandlerBroadcastReceiver", "GCM Message Received!");
-
+            await Task.Delay(1000);
             // To concatenate all the content we have inside "intent"
             var msg = new StringBuilder();
 
@@ -137,33 +138,33 @@ namespace TestPushNotification
             //Create an intent to show ui
             var uiIntent = new Intent(this, typeof(MainActivity));
 
-            var notification = new Notification(Android.Resource.Drawable.SymActionEmail, title);
-            notification.Flags = NotificationFlags.AutoCancel;
-            notification.SetLatestEventInfo(this, title, desc, PendingIntent.GetActivity(this, 0, uiIntent, 0));
-            notificationManager.Notify(1, notification);
-            this.CreateAndShowDialog(desc, title);
-
-
-            ////Use Notification Builder
-            //NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-
-            ////Create the notification
-            ////we use the pending intent, passing our ui intent over which will get called
-            ////when the notification is tapped.
-            //var notification = builder.SetContentIntent(PendingIntent.GetActivity(this, 0, uiIntent, 0))
-            //        .SetSmallIcon(Android.Resource.Drawable.SymActionEmail)
-            //        .SetTicker(title)
-            //        .SetContentTitle(title)
-            //        .SetContentText(desc)
-
-            //        //Set the notification sound
-            //        .SetSound(RingtoneManager.GetDefaultUri(RingtoneType.Notification))
-
-            //        //Auto cancel will remove the notification once the user touches it
-            //        .SetAutoCancel(true).Build();
-
-            ////Show the notification
+            //var notification = new Notification(Android.Resource.Drawable.SymActionEmail, title);
+            //notification.Flags = NotificationFlags.AutoCancel;
+            //notification.SetLatestEventInfo(this, title, desc, PendingIntent.GetActivity(this, 0, uiIntent, 0));
             //notificationManager.Notify(1, notification);
+            //this.CreateAndShowDialog(desc, title);
+
+
+            //Use Notification Builder
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+
+            //Create the notification
+            //we use the pending intent, passing our ui intent over which will get called
+            //when the notification is tapped.
+            var notification = builder.SetContentIntent(PendingIntent.GetActivity(this, 0, uiIntent, 0))
+                    .SetSmallIcon(Android.Resource.Drawable.SymActionEmail)
+                    .SetTicker(title)
+                    .SetContentTitle(title)
+                    .SetContentText(desc)
+
+                    //Set the notification sound
+                    .SetSound(RingtoneManager.GetDefaultUri(RingtoneType.Notification))
+
+                    //Auto cancel will remove the notification once the user touches it
+                    .SetAutoCancel(true).Build();
+
+            //Show the notification
+            notificationManager.Notify(1, notification);
         }
 
         private void CreateAndShowDialog(string message, string title)
