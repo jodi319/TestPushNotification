@@ -9,7 +9,7 @@ namespace TestPushNotification
     [Activity(Label = "TestPushNotification", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-       // void Register
+       // void Register =
 
         protected override void OnCreate(Bundle bundle)
         {
