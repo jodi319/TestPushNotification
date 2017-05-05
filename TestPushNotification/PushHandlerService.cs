@@ -112,7 +112,7 @@ namespace TestPushNotification
             }
             //if (!string.IsNullOrEmpty(msg2))
             //{
-            //    this.createNotification("New message!", msg2);
+            //    this.createNotification("New message!", msg2);;
             //    return;
             //}
 
